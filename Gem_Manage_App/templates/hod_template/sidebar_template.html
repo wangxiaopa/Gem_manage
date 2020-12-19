@@ -1,0 +1,131 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="{% url 'admin_home' %}" class="brand-link">
+        <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">主页</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="{% url 'admin_profile' %}" class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+
+            <li class="nav-item">
+              {% url 'admin_home' as admin_home %}
+              <a href="{{ admin_home }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  主页
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'manage_receipt' as manage_receipt %}
+              {% url 'edit_receipt' receipt_id=id as edit_receipt %}
+              <a href="{{ manage_receipt }}" class="nav-link {% if request.path == receipt_staff %} active {% endif %} {% if request.path == edit_receipt %} active {% endif %}">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                  鉴定收样
+                </p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+             {% url 'manage_sample' as manage_sample %}
+             {% url 'add_remarks' remarks_id=id as add_remarks %}
+             {% url 'edit_sample' sample_id=id as edit_sample %}
+             {% url 'sample_approve'  as sample_approve %}
+              <a href="{{ manage_sample }}" class="nav-link {% if request.path == manage_sample %} active {% endif %} {% if request.path == add_remarks %} active {% endif %} {% if request.path == edit_sample %} active {% endif %} {% if request.path == sample_approve %} active {% endif %}">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                  样品检测
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'manage_task' as manage_task %}
+              {% url 'add_identification_staff' as add_identification_staff %}
+              <a href="{{ manage_task }}" class="nav-link {% if request.path == manage_task %} active {% endif %} {% if request.path == add_identification_staff %} active {% endif %}" >
+                <i class="nav-icon fas fa-user-graduate"></i>
+                <p>
+                  任务管理
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'manage_certification' as manage_certification %}
+              <a href="{{ manage_certification }}" class="nav-link {% if request.path == manage_certification %} active {% endif %}">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  证书管理
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'manage_excel' as manage_excel %}
+              <a href="{{ manage_excel }}" class="nav-link {% if request.path == manage_excel %} active {% endif %}">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                  报表功能
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'manage_member' as manage_member %}
+{#              {% url 'add_receipt' as add_receipt %}#}
+              {% url 'edit_member' member_id=id as edit_member %}
+              <a href="{{ manage_member }}" class="nav-link {% if request.path == manage_member %} active {% endif %}  {% if request.path == edit_member %} active {% endif %}">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                  会员管理
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+                {% url 'manage_system' as manage_system %}
+                <a href="{{ manage_system }}"  class="nav-link {% if request.path == manage_system %} active {% endif %}">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                  系统管理
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'add_subject' as add_subject %}
+              <a href="{{ add_subject }}" class="nav-link {% if request.path == add_subject %} active {% endif %}">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  日志管理
+                </p>
+              </a>
+            </li>
+
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>

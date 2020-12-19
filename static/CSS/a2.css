@@ -1,0 +1,15 @@
+/*.feature{*/
+/*    display:inline;*/
+/*}*/
+
+.radio_2 input[type="radio"]{
+    width: 10px;
+    height: 10px;
+}
+
+.ssettings input[type="submit"] {
+    position: absolute;
+    left: 600px;
+    top: 600px;
+    width: 50px;
+}

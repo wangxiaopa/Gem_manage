@@ -1,0 +1,95 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+
+    <div id="a6_content">
+        <h4>会员类型</h4>
+        <p> </p>
+        <div>
+
+
+
+
+
+
+<section class="content">
+        <div class="container-fluid">
+
+            <a class="btn btn-primary" href="{% url 'add_membertype' %}" role="button">增加会员数据</a> <br/>&nbsp;
+
+            {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">会员信息</h3>
+
+
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                <th>序号</th>
+                                <th>会员类型</th>
+                                <th>状态</th>
+                                <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for membertype in membertypes %}
+                                <tr>
+                                <td>{{ membertype.id }}</td>
+                                <td>{{ membertype.member_type }}</td>
+                                <td>{{ membertype.status }}</td>
+                                <td>{{ membertype.describe }}</td>
+                                <td>
+                                    <a href="{% url 'edit_membertype' membertype.id %}" class="btn btn-success">编辑</a>
+                                    <a href="{% url 'delete_membertype' membertype.id %}" class="btn btn-danger">删除</a>
+                                </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+</section>
+
+
+        </div>
+    </div>
+
+{% endblock %}

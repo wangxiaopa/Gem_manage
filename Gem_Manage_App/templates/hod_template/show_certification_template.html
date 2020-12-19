@@ -1,0 +1,168 @@
+{% block page_title %}
+    证书查询结果 | {{ certifications.id }}
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+<script src={% static '../static/qrcode.js' %}></script>
+<script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/1.2.4/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#print_button').click(function(event) {
+        html2canvas($('#print_content'),{
+            onrendered: function(image) {
+                document.getElementById("print_conclusion").appendChild(image);
+                convertCanvasToImage(image);
+            }
+        })
+        alert("打印成功! 点击确定后，右键保存图片在本地打印！");
+    });
+    function convertCanvasToImage(image) {
+        var image = new Image();
+        image.src = image.toDataURL("image/jpeg");
+        return image;
+    }
+})
+</script>
+
+            <div class="card-header">
+                <h3 class="card-title">证书信息</h3>
+                {% comment %} 生成二维码的url, 不显示, 仅传值 {% endcomment %}
+                <input type="hidden" id="qrurl" value="http://127.0.0.1:8000/show_certification/{{ certifications.id }}" />
+           </div>
+                <div id="print_content" class="cert_style">
+                                                           <div class="cert_conclusion">
+                        <span> {{ certifications.gemstone_id.identification_result }}</span></br>
+                    </div>
+                    <div class="cert_appearance">
+                        <span> {{ certification.gemstone_id.gemstone_appearance }}</span></br>
+                    </div>
+                    <div class="cert_weight">
+                        <span> {{ certification.gemstone_id.gemstone_mass }}</span></br>
+                    </div>
+                    <div class="cert_magnification">
+                        <span> {{ certifications.gemstone_id.observation_result }}</span></br>
+                    </div>
+                    <div class="cert_precious">
+                        <span> {{ certifications.gemstone_id.heavy_metal }}</span></br>
+                    </div>
+                    <div class="cert_others">
+                        <span> {{ certifications.gemstone_id.others }}</span></br>
+                    </div>
+                    <div class="cert_identifyer">
+                        <span>{{ certifications.identification_staff.user_name }}</span></br>
+                    </div>
+                    <div class="cert_supervisor">
+                        <span> {{ certifications.examine_staff.user_name }}</span></br>
+                    </div>
+                    <div class="cert_no">
+                        <span> {{ certifications.gemstone_id.gemstone_id }}</span></br>
+                    </div>
+                    {% comment %} 生成二维码 {% endcomment %}
+                    <div id="qrcode" class="cert_vcode">
+                    </div>
+                </div>
+                {% comment %} <form enctype="multipart/form-data" action="{% url "save_profile" %}" method="POST">
+                <button type="submit" value="Login">上传</button>
+                </form> {% endcomment %}
+  {% endblock main_content %}
+{% comment %} 生成二维码的js, 因为 qrurl 的值在 body 里, 所以要放 body 后面 {% endcomment %}
+<script type="text/javascript">
+    var tmpurl=document.getElementById("qrurl");
+    turl=tmpurl.value;
+    new QRCode(document.getElementById("qrcode"),
+    turl,{width: 100,
+	height: 100});
+</script>
+
+
+{% comment %} 证书打印的 css 样式 {% endcomment %}
+<style>
+{% comment %} 第一个证书(HTML元素) {% endcomment %}
+.cert_style{
+    height:1063px;
+    width:1465px;
+    background-image: url({% static '../media/cert.jpg' %});
+
+}
+{% comment %} 第二个证书(打印的图片) {% endcomment %}
+.cert_style2{
+    height:1063px;
+    width:1465px;
+}
+.cert_conclusion{
+    {% comment %} 鉴定结果 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 270px;
+    font-size:26px;
+}
+.cert_appearance{
+    {% comment %} 外观 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 355px;
+    font-size:26px;
+}
+.cert_weight{
+    {% comment %} 质量 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 440px;
+    font-size:26px;
+}
+.cert_magnification{
+    {% comment %} 放大检查 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 525px;
+    font-size:26px;
+}
+.cert_precious{
+    {% comment %} 贵金属检测 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 610px;
+    font-size:26px;
+}
+.cert_others{
+    {% comment %} 其他 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 695px;
+    font-size:26px;
+}
+.cert_identifyer{
+    {% comment %} 鉴定者 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 860px;
+    font-size:26px;
+}
+.cert_supervisor{
+    {% comment %} 审核者 {% endcomment %}
+    position:absolute;
+    left: 230px;
+    top: 945px;
+    font-size:26px;
+}
+.cert_no{
+    {% comment %} 编号 {% endcomment %}
+    position:absolute;
+    left: 925px;
+    top: 270px;
+    font-size:26px;
+}
+.cert_vcode{
+    {% comment %} 验证码 {% endcomment %}
+    position:absolute;
+    left: 1050px;
+    top: 405px;
+}
+
+</style>

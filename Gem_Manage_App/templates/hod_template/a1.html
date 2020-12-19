@@ -1,0 +1,267 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+
+    <div id="a1_content">
+        <h4>用户组</h4>
+        <p> </p>
+        <div>
+
+        <section class="content">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="btn_1" type="button"> 新建</button><br/>&nbsp;
+                                <div class="form_1" height=300px>
+                                    <div class="input_1"><div class="login_logo">添加用户组</div><div class="close">X</div></div>
+                                    <hr>
+                                    <form role="form" method="POST" action="{% url 'add_usergroup_save' %}" >
+                                        {% csrf_token %}
+                                    <div class="input_1"><input type="text" id="group_name" name="group_name" placeholder="&nbsp;用户组名"></div>
+                                    <div class="input_1"><input type="text" id="group_describe" name="group_describe" placeholder="&nbsp;用户组描述"></div>
+                                    <div class="input_1"><button type="submit" id="submit111">提交</button></div>
+
+                                    </form>
+                                </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- general form elements -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">用户组信息</h3>
+
+
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                        <th>ID</th>
+                                        <th>用户组</th>
+                                        <th>描述</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for usergroup in usergroups %}
+                                        <tr>
+                                        <td>{{ usergroup.id }}</td>
+                                        <td>{{ usergroup.group_name }}</td>
+                                        <td>{{ usergroup.group_describe }}</td>
+                                        <td>
+                                            <a href="{% url 'edit_usergroup' usergroup.id %}" class="btn btn-success">编辑</a>
+                                            <a href="{% url 'delete_usergroup' usergroup.id %}" class="btn btn-danger">删除</a>
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                                </div>
+                            <!-- /.card -->
+
+                        </div>
+                    </div>
+
+                </div><!-- /.container-fluid -->
+        </section>
+        </div>
+    </div>
+    <div id="a1_content">
+        <h4>用户</h4>
+        <p> </p>
+        <div>
+
+        <section class="content">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="btn_2" type="button"> 新建</button><br/>&nbsp;
+                                <div class="form_2" height=300px>
+                                    <div class="input_2"><div class="login_logo">添加用户</div><div class="close_1">X</div></div>
+                                    <hr>
+                                    <form role="form" method="POST" action="{% url 'add_user_save' %}" >
+                                        {% csrf_token %}
+                                        <div class="input_2"><input type="text" id="user_name" name="user_name" placeholder="&nbsp;用户名"></div>
+                                    <label>用户组</label>
+                                        <div class="input_2" align="center"  >
+
+                                            <select type="text" class="form-control" name="group"  style="width:280px;height: 32px;">
+                                           {% for usergroup in usergroups %}
+                                               <option value="{{ usergroup.group_name }}" >{{ usergroup.group_name }}</option>
+                                           {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="input_2"><input type="text" id="password" name="password" placeholder="&nbsp;输入密码"></div>
+                                        <div class="input_2"><input type="text" id="password1" name="password1" placeholder="&nbsp;确认密码"></div>
+                                        <div class="input_2"><input type="text" id="email" name="email" placeholder="&nbsp;电子邮件"></div>
+                                        <div class="input_2"><input type="text" id="tel" name="tel" placeholder="&nbsp;电话号码"></div>
+
+                                    <div class="input_2"><button type="submit" id="submit111">提交</button></div>
+
+                                    </form>
+                                </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- general form elements -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">用户组信息</h3>
+
+
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                        <th>ID</th>
+                                        <th>用户名</th>
+                                        <th>用户组</th>
+                                        <th>电子邮件</th>
+                                        <th>电话号码</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.user_name }}</td>
+                                        <td>{{ user.group.group_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.tel }}</td>
+                                        <td>
+                                            <a href="{% url 'edit_user' user.id %}" class="btn btn-success">编辑</a>
+                                            <a href="{% url 'delete_user' user.id %}" class="btn btn-danger">删除</a>
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                                </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+        </section>
+        </div>
+    </div>
+
+    <div id="a1_content">
+        <h4>用户权限</h4>
+        <p> </p>
+        <div>
+
+        <section class="content">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="btn_2" type="button"> 新建</button><br/>&nbsp;
+                                <div class="form_2" height=300px>
+                                    <div class="input_2"><div class="login_logo">添加用户</div><div class="close_1">X</div></div>
+                                    <hr>
+                                    <form role="form" method="POST" action="{% url 'add_user_save' %}" >
+                                        {% csrf_token %}
+                                    <label>
+                                        <div class="input_2"><input type="text" id="user_name" name="user_name" placeholder="&nbsp;用户名"></div>
+                                    </label>
+                                    <label>
+                                        <div class="input_2"><input type="text" id="group" name="group" placeholder="&nbsp;用户组"></div>
+                                    </label>
+                                    <label>
+                                        <div class="input_2"><input type="text" id="password" name="password" placeholder="&nbsp;输入密码"></div>
+                                    </label>
+                                    <label>
+                                        <div class="input_2"><input type="text" id="password1" name="password1" placeholder="&nbsp;确认密码"></div>
+                                    </label>
+                                    <label>
+                                        <div class="input_2"><input type="text" id="email" name="email" placeholder="&nbsp;电子邮件"></div>
+                                    </label>
+                                    <label>
+                                        <div class="input_2"><input type="text" id="tel" name="tel" placeholder="&nbsp;电话号码"></div>
+                                    </label>
+                                    <div class="input_2"><button type="submit" id="submit111">提交</button></div>
+
+                                    </form>
+                                </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- general form elements -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">用户组信息</h3>
+
+
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                        <th>ID</th>
+                                        <th>用户名</th>
+                                        <th>用户组</th>
+                                        <th>电子邮件</th>
+                                        <th>电话号码</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.user_name }}</td>
+                                        <td>{{ user.group.group_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.tel }}</td>
+                                        <td>
+                                            <a href="{% url 'edit_user' user.id %}" class="btn btn-success">编辑</a>
+                                            <a href="{% url 'delete_user' user.id %}" class="btn btn-danger">删除</a>
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                                </div>
+                            <!-- /.card -->
+
+                        </div>
+                    </div>
+
+                </div><!-- /.container-fluid -->
+        </section>
+
+        </div>
+    </div>
+    <script language="JavaScript" type="text/javascript">
+    window.onload=function (){
+        var btn_1=document.getElementById("btn_1");
+	    var btn_2=document.getElementById("btn_2");
+	    var close=document.getElementsByClassName("close");
+	    var close_1=document.getElementsByClassName("close_1");
+	    var form_1=document.getElementsByClassName("form_1");
+	    var form_2=document.getElementsByClassName("form_2");
+	    btn_1.addEventListener('click',function(){
+		    form_1[0].className="form_1 open";
+	    })
+	    btn_2.addEventListener('click',function(){
+		    form_2[0].className="form_2 open";
+	    })
+        close[0].addEventListener('click',function(){
+		    form_1[0].className="form_1";
+	    })
+	    close_1[0].addEventListener('click',function(){
+		    form_2[0].className="form_2";
+	    })
+    }
+    </script>
+{% endblock %}

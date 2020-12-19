@@ -1,0 +1,139 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    编辑样品信息
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">样品信息</h3>
+                    </div>
+                    <form role="form" method="POST" action="{% url 'add_remarks_save' %}">
+                        {% csrf_token %}
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>编号 </label>
+                                <input type="text" class="form-control" name="gemstone_id" value="{{ singlesample.gemstone_id }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>外观 </label>
+                                 <input type="text" class="form-control" name="gemstone_appearance" value="{{ singlesample.gemstone_appearance }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>总质量 </label>
+                                 <input type="text" class="form-control" name="gemstone_mass" value="{{ singlesample.gemstone_mass }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>密度 </label>
+                                 <input type="text" class="form-control" name="gemstone_density" value="{{ singlesample.gemstone_density }}" >
+                            </div>
+                             <div class="form-group">
+                                <label>折射率 </label>
+                                 <input type="text" class="form-control" name="refraction_index" value="{{ singlesample.refraction_index }}" >
+                            </div>
+                             <div class="form-group">
+                                <label>光学特性 </label>
+                                 <input type="text" class="form-control" name="light_characteristc" value="{{ singlesample.light_characteristc }}" >
+                            </div>
+                             <div class="form-group">
+                                <label>放大观察 </label>
+                                 <input type="text" class="form-control" name="observation_result" value="{{ singlesample.observation_result }}" >
+                            </div>
+                             <div class="form-group">
+                                <label>重金属检测 </label>
+                                 <input type="text" class="form-control" name="heavy_metal" value="{{ singlesample.heavy_metal }}" >
+                            </div>
+                             <div class="form-group">
+                                <label>红外线检测 </label>
+                                 <input type="text" class="form-control" name="infrared" value="{{ singlesample.infrared }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>琢型 </label>
+                                 <input type="text" class="form-control" name="cut" value="{{ singlesample.cut }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>颜色级别 </label>
+                                 <input type="text" class="form-control" name="color_level" value="{{ singlesample.color_level }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>纯净级别 </label>
+                                 <input type="text" class="form-control" name="Cleanliness_level" value="{{ singlesample.Cleanliness_level }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>切工 </label>
+                                 <input type="text" class="form-control" name="diamond_cut" value="{{ singlesample.diamond_cut }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>其他 </label>
+                                 <input type="text" class="form-control" name="others" value="{{ singlesample.others }}" >
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                         <button type="submit" class="btn btn-primary" id="submit_receipt">提交</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+<script>
+
+function checkboxOnclick(checkbox){
+
+if ( checkbox.checked == true){
+
+//Action for checked
+
+}else{
+
+//Action for not checked
+
+}
+
+}
+
+</script>
+
+参考：https://bbs.csdn.net/topics/90507809
+
+  {% endblock main_content %}

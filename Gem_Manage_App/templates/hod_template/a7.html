@@ -1,0 +1,121 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+    <div>
+        <h2>打印设置</h2>
+        <form id="print_set" action="." method="post" name="form1">
+            {% csrf_token %}
+            <div class="radio_1" name="Ty" id="dvCBs">
+            <input type="radio" name="typet" value="1" checked onClick="check()" />宝石
+            <input type="radio" name="typet" value="2" onClick="check()"/>钻石
+            <input type="radio" name="typet" value="3" onClick="check()"/>小卡
+            <input type="radio" name="typet" value="4" onClick="check()"/>大卡
+            <input type="radio" name="typet" value="5" onClick="check()"/>大报告
+            <input type="radio" name="typet" value="6" onClick="check()"/>回执
+        </div>
+        <div class="settings">
+<!--                <input type="submit" value="提交" name="sub">-->
+                <div class="set1">
+                    <h3>文字设置(mm)</h3>
+                    <table cellpadding="10px">
+                        <tr>
+                            <th>起始 -X: <input type="text" style="width: 60px" name="start_x" value="{{ pt.start_x }}"></th>
+                            <th>行间隔: <input type="text" style="width: 60px" name="row_spacing" value="{{ pt.row_spacing }}"></th>
+                            <th>页间隔: <input type="text" style="width: 60px" name="page_spacing" value="{{ pt.page_spacing }}"></th>
+                            <th>每行字数: <input type="text" style="width: 60px" name="row_words" value="{{ pt.row_words }}"></th>
+                        </tr>
+                        <tr>
+                            <th>起始 -Y: <input type="text" style="width: 60px" name="start_y" value="{{ pt.start_y }}"></th>
+                            <th>列间隔: <input type="text" style="width: 60px" name="col_spacing" value="{{ pt.col_spacing }}"></th>
+                            <th></th>
+                            <th>最大行数: <input type="text" style="width: 60px" name="row_max" value="{{ pt.row_max }}"></th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="set2">
+                    <h3>图片设置(mm)</h3>
+                    <table cellpadding="10px">
+                        <tr>
+                            <th>照片 -X: <input type="text" style="width: 60px" name="picture_x" value="{{ pt.picture_x }}"></th>
+                            <th>二维码X: <input type="text" style="width: 60px" name="QR_X" value="{{ pt.QR_X }}"></th>
+                        </tr>
+                        <tr>
+                            <th>照片 -Y: <input type="text" style="width: 60px" name="picture_y" value="{{ pt.picture_x }}"></th>
+                            <th>二维码Y: <input type="text" style="width: 60px" name="QR_Y" value="{{ pt.QR_Y }}"></th>
+                        </tr>
+                        <tr>
+                            <th>照片大小X: <input type="text" style="width: 60px" name="pic_sizex" value="{{ pt.pic_sizex }}"></th>
+                            <th>二维码大小: <input type="text" style="width: 60px" name="QR_size" value="{{ pt.QR_size }}"></th>
+                        </tr>
+                        <tr>
+                            <th>照片大小Y: <input type="text" style="width: 60px" name="pic_sizey" value="{{ pt.pic_sizey }}"></th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="set3">
+                    <h3>页面设置(mm)</h3>
+                    <table cellpadding="10px">
+                        <tr>
+                            <th>纸张大小X: <input type="text" style="width: 60px" name="page_sizex" value="{{ pt.page_sizex }}"></th>
+                            <th>打印字号: <input id="font" list="font_size" style="width: 60px" name="font" value="{{ pt.font }}"/>
+                                <datalist id="font_size">
+                                    <option value="1">
+                                    <option value="2">
+                                    <option value="3">
+                                    <option value="4">
+                                    <option value="5">
+                                    <option value="6">
+                                    <option value="7">
+                                    <option value="8">
+                                    <option value="9">
+                                    <option value="10">
+                                    <option value="11">
+                                    <option value="12">
+                                </datalist></th>
+                        </tr>
+                        <tr>
+                            <th>纸张大小Y: <input type="text" style="width: 60px" name="page_sizey" value="{{ pt.page_sizey }}"></th>
+                            <th>横向打印: <input id="horizontal" list="hz" style="width: 60px" name="horizontal" value="{{ pt.horizontal }}"/>
+                                <datalist id="hz">
+                                    <option value="1">1
+                                    <option value="0">0
+                                </datalist></th>
+                        </tr>
+                    </table>
+                </div>
+                <input type="submit" value="提交" name="sub">
+        </div>
+        </form>
+    </div>
+<!--<script>-->
+<!--    function readradio() {-->
+<!--        var item=$('input[name=type]:checked').val();-->
+<!--        xmlhttp.open("GET",".?it=item",true);-->
+<!--    }-->
+<!--</script>-->
+<script language="JavaScript" type="text/javascript">
+function check()
+{
+    var radios = document.getElementsByName("typet");
+          for (var i = 0; i < radios.length; i++) {
+              if (radios[i].checked) {
+                  document.cookie = 'radioindex=' + i;
+              }
+          }
+    document.form1.submit();
+}
+
+window.onload=function () {
+
+          var cookies = document.cookie;
+          {#alert($.cookie('radioindex'));#}
+          if (cookies != "") {
+              document.getElementsByName("typet")[$.cookie('radioindex')].checked = true;
+          } else
+              {
+              check();
+          }
+
+      }
+
+</script>
+{% endblock %}

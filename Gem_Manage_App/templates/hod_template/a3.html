@@ -1,0 +1,122 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+
+ <div id="a6_content">
+        <h4>备份管理</h4>
+        <p> </p>
+        <div>
+
+
+
+
+
+
+<section class="content">
+        <div class="container-fluid">
+            <a class="btn btn-primary" href="{% url 'backup' %}" role="button">一键备份</a> <br/>&nbsp;
+
+            {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+
+                            <tbody>
+
+                            <div>
+        <h3>备份管理</h3>
+        &nbsp;&nbsp;备份方式：
+        <select>
+            <option value ="shoudong">手动</option>
+            <option value ="zidong">自动</option>
+        </select><br>
+        &nbsp;&nbsp;备份类型：
+        <select>
+            <option value ="shoudong">增量备份</option>
+            <option value ="zidong">全量备份</option>
+        </select><br>
+        &nbsp;&nbsp;启动时间：
+        <input type="date">
+        <input type="time">
+        <br>
+        &nbsp;&nbsp;备份周期：
+        <select>
+            <option value ="shoudong">每天</option>
+            <option value ="zidong">每周</option>
+            <option value ="zidong">每月</option>
+            <option value ="zidong">每年</option>
+        </select><br>
+    </div>
+    <div>
+        <h3>备份数据</h3>
+        &nbsp;&nbsp;启动时间：<input type="date"><input type="time">
+        结束时间：<input type="date"><input type="time">
+        <br><br>
+        <div>
+<!--            <div style='padding-left:100px,maging-left=100px'>ni</div>-->
+            <div style='padding-left:100px;maging-left:100px'>
+            <table border="1">
+            <tr>
+              <th>序号</th>
+              <th>备份名</th>
+              <th>备份日期</th>
+              <th>备份位置</th>
+              <th>备份文件名</th>
+              <th>备注</th>
+            </tr>
+            <tr><td>1</td><td>11111</td><td>2020-10-1</td><td>D:\backup</td><td>11111.baoshi</td><td>none</td></tr>
+            <tr><td>2</td><td>22222</td><td>2020-10-2</td><td>D:\backup</td><td>22222.baoshi</td><td>none</td></tr>
+            <tr><td>3</td><td>33333</td><td>2020-10-3</td><td>D:\backup</td><td>33333.baoshi</td><td>none</td></tr>
+            <tr><td>4</td><td>44444</td><td>2020-10-4</td><td>D:\backup</td><td>44444.baoshi</td><td>none</td></tr>
+            </table>
+        </div>
+        </div>
+    </div>
+
+
+
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+</section>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

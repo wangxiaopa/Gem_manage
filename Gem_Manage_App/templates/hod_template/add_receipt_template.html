@@ -1,0 +1,174 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    添加收样单
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">检测室</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <button id="btn_3" type="button"> 弹 框 输 入</button>
+                        <div class="form_3" height=600px>
+                            <div class="input_3"><div class="login_logo">任务信息</div><div class="close_3">X</div></div>
+                            <hr>
+                            <form role="form" method="POST" action="{% url 'add_task' %}" >
+                                {% csrf_token %}
+                            <div class="input_3"><input type="text" id="identification_id_input" name="identification_id_input" placeholder="&nbsp;检测批号"></div>
+                            <div class="input_3"><input type="text" id="single_sample_name_input" name="single_sample_name_input" placeholder="&nbsp;样品名称"></div>
+                            <div class="input_3"><input type="text" id="single_sample_num_input" name="single_sample_num_input" placeholder="&nbsp;样品数量"></div>
+                            <div class="input_3">
+                                <label>证书种类</label>
+
+                                    <div align="center"  >
+                                <select type="text" class="form-control" name="sample_type_input"  style="width: 280px;height: 34px">
+                                     <option value="1">大卡</option>
+                                     <option value="2">玉石</option>
+                                     <option value="3">钻石</option>
+                                     <option value="4">宝石</option>
+                                     <option value="5">小卡</option>
+                                     <option value="6">大报告</option>
+                                </select>
+                                </div>
+                            </div>
+                                <br><br>
+                            <div class="input_3"><input type="text" id="require_input" name="require_input" placeholder="&nbsp;送检要求"></div>
+                            <div class="input_3"><input type="text" id="status_input" name="status_input" placeholder="&nbsp;备注"></div>
+                            <div class="input_3"><button type="submit" id="submit111">提交</button></div>
+
+                            </form>
+                        </div>
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">收样单信息</h3>
+                    </div>
+                    <form role="form" method="POST" action="{% url 'add_receipt_save' %}">
+                        {% csrf_token %}
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>检测批号 </label>
+                                <input type="text" class="form-control" name="identification_id" >
+                            </div>
+                            <div class="form-group">
+                                <label>联系电话 </label>
+                                <input type="text" class="form-control" name="receipt_tel" >
+                            </div>
+                            <div class="form-group">
+                                <label>收样状态 </label>
+                                <input type="text" class="form-control" name="sample_status" >
+                            </div>
+                            <div class="form-group">
+                                <label>框号 </label>
+                                <input type="text" class="form-control" name="basket_id" >
+                            </div>
+                            <div class="form-group">
+                                <label>样品信息 </label>
+                            </div>
+                            <div class="form-group">
+                                <label>送样人单位 </label>
+                                <input type="text" class="form-control" name="sender_company" >
+                            </div>
+                            <div class="form-group">
+                                <label>送样人 </label>
+                                <input type="text" class="form-control" name="sample_sender" >
+                            </div>
+                            <div class="form-group">
+                                <label>送样人电话 </label>
+                                <input type="text" class="form-control" name="sender_tel" >
+                            </div>
+                            <div class="form-group">
+                                <label>邮政编码 </label>
+                                <input type="text" class="form-control" name="postal_code" >
+                            </div>
+                            <div class="form-group">
+                                <label>收样人 </label>
+                                <select type="text" class="form-control" name="sample_collectr" >
+                                   {% for collectr in sample_collectrs %}
+                                       <option value="{{ collectr.user_name }}" >{{ collectr.user_name }}</option>
+                                   {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>预计完成时间 </label>
+                                <input type="date" class="form-control" name="finish_date" >
+                            </div>
+                            <div class="form-group">
+                                <label>鉴定费用 </label>
+                                <input type="text" class="form-control" name="identification_cost" >
+                            </div>
+                            <div class="form-group">
+                                <label>是否付款 </label>
+                                <select type="text" class="form-control" name="payment_state" >
+                                     <option value="1">是</option>
+                                     <option value="2">否</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                         <button type="submit" class="btn btn-primary" id="submit_receipt">提交</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+        </div>
+</section>
+    <script language="JavaScript" type="text/javascript">
+        window.onload=function (){
+            var btn_3=document.getElementById("btn_3");
+            var close_3=document.getElementsByClassName("close_3");
+            var form_3=document.getElementsByClassName("form_3");
+            btn_3.addEventListener('click',function(){
+		        form_3[0].className="form_3 open";
+	        })
+            close_3[0].addEventListener('click',function(){
+		        form_3[0].className="form_3";
+	        })
+        }
+    </script>
+
+
+  {% endblock main_content %}

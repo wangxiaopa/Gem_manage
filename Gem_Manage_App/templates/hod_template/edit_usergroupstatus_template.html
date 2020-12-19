@@ -1,0 +1,92 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    编辑usergroupstatus
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">编辑 usergroupstatus</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{% url 'edit_usergroupstatus_save' %}">
+                        {% csrf_token %}
+
+
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" name="usergroupstatus_id" value={{ usergroupstatus_id }} />
+                                <label>usergroupstatus配置名 </label>
+                                <select type="text" class="form-control" name="user_group"  id="user_group" style="text-align: center; text-align-last: center;">
+                                       {% for usergroup in usergroups %}
+                                           <option value="{{ usergroup.group_name }}" >{{ usergroup.group_name }}</option>
+                                       {% endfor %}
+                                </select>
+                                <label>usergroupstatus配置值 </label>
+                                <input type="text" class="form-control" name="usergroup_status_values" value="{{ usergroupstatus.usergroup_status_values }}">
+
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">更新信息</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+<script>
+    var s = document.getElementById('user_group');
+    for(var i = 0 ;i < s.options.length;i++)
+    {
+     if(s.options[i].value == "{{ usergroupstatus.user_group.group_name }}")
+     {
+        s.options[i].selected = true;
+        }
+    }
+</script>
+  {% endblock main_content %}

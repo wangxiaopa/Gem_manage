@@ -1,0 +1,21 @@
+
+h2{
+    font-size: 22px;
+}
+h3{
+    font-size: 18px;
+}
+.radio_1{
+
+}
+
+.radio_1 input[type="radio"]{
+    width: 10px;
+    height: 10px;
+}
+.settings input[type="submit"]{
+    position: absolute;
+    right: 100px;
+    top: 200px;
+    width: 50px;
+}

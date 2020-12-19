@@ -1,0 +1,287 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    样品检测
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+<script>//根据任务状态筛选报表
+    function select_forms() {
+        var Id = document.getElementById('all_forms');//获取表单的id
+        var rowsLength = Id.rows.length;//表格的行数
+        //全部显示
+        for (var i = 1; i < rowsLength; i++) {
+            Id.rows[i].style.display = '';//每次查询和刷新前 所有数据都全部显示
+        }
+        var obj;
+        var option;
+        //检测批号/编号
+        obj=document.getElementById('检测批号/编号');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+
+         if(option!='全选')
+        {
+            var id = document.getElementById("content1").value;//内容
+             if(id!='')
+             {
+                 if (option == '检测批号')
+                 {
+                     for (var i = 1; i < rowsLength; i++)
+                     {
+                         var searchText = Id.rows[i].cells[2].innerHTML;//查第几列 0开始////////////////////////////////修改
+                         searchText = searchText.trim();
+                         if (searchText != '')
+                             if (searchText != id)//筛选是只隐藏就可以的
+                                 Id.rows[i].style.display = 'none';//隐藏行操作
+                     }
+                 }
+                 else {
+                     if (option == '编号')
+                     {
+                         for (var i = 1; i < rowsLength; i++)
+                         {
+                             var searchText = Id.rows[i].cells[6].innerHTML;//查第几列 0开始////////////////////////////////修改
+                             searchText = searchText.trim();
+                             if (searchText != '')
+                                 if (searchText != id)//筛选是只隐藏就可以的
+                                     Id.rows[i].style.display = 'none';//隐藏行操作
+                         }
+                     }
+                 }
+             }
+        }
+
+        //检测员
+        obj= document.getElementById('检测员');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if(option!='全选')
+        {
+            for(var i=1;i<rowsLength;i++)
+            {
+                var searchText = Id.rows[i].cells[3].innerHTML;//查第几列 0开始////////////////////////////////
+                if(searchText!=option)//筛选是只隐藏就可以的
+                    Id.rows[i].style.display='none';//隐藏行操作
+            }
+        }
+
+        //状态
+        obj= document.getElementById('任务状态');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if(option!='全选')
+        {
+            for(var i=1;i<rowsLength;i++)
+            {
+                var searchText = Id.rows[i].cells[5].innerHTML;//查第几列 0开始////////////////////////////////
+                if(searchText!=option)//筛选是只隐藏就可以的
+                    Id.rows[i].style.display='none';//隐藏行操作
+            }
+        }
+
+         //时间
+        var d1 = new Date(document.getElementById("date1").value).getTime()-86486400;
+        var d2 = new Date(document.getElementById("date2").value).getTime();
+        //解决日期空值问题的最简单方法 设定最大最小日期
+        if (isNaN(d1))
+            d1 = new Date("1900-01-01").getTime();//设定的最小年份
+        if (isNaN(d2))
+            d2 = new Date("2100-12-31").getTime();//设定的最大年份
+        //获得表单中的日期
+        obj = document.getElementById("选择日期");
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if (option != "选择日期") {
+            if (option == "收样日期") {
+                for (var i = 1; i < rowsLength; i++) {
+                    var d = new Date(Id.rows[i].cells[9].innerHTML).getTime();//查收样日期列
+                    if (d < d1 || d2 < d)//不在区间内 隐藏
+                        Id.rows[i].style.display = 'none';//隐藏行操作
+                }
+            } else//完成日期
+            {
+                for (var i = 1; i < rowsLength; i++) {
+                    var d = new Date(Id.rows[i].cells[10].innerHTML).getTime();//查收样日期列
+                    if (d < d1 || d2 < d)//不在区间内 隐藏
+                        Id.rows[i].style.display = 'none';//隐藏行操作
+                }
+            }
+        }
+
+    }
+
+</script>
+
+
+    <section class="content" style="margin-left: 11px;margin-right: 8px">
+            {% if messages %}
+                <div class="form-group">
+                    <div class="col-12">
+                        {% for message in messages %}
+                            {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+
+           <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h3 class="card-title">样品信息</h3>
+                        </div>
+
+                        <form>
+                        <div style="margin-top:10px ">
+
+
+&nbsp; &nbsp;&nbsp; &nbsp;
+<select id="检测批号/编号"  name="">
+  <option   value="全选">检测批号/编号</option>
+  <option   value="检测批号" selected>检测批号</option>
+  <option   value="编号">编号</option>
+ </select>&nbsp;
+<input id="content1" name="content1" style="width:150px"/>
+&nbsp; &nbsp;
+检测员:&nbsp;
+<select id="检测员"  name="">
+  <option   value="全选">请选择</option>
+  <option   value="检测员">检测员</option>
+  <option   value="徐杨">徐杨</option>
+  <option   value="李四">李四</option>
+ </select>
+&nbsp; &nbsp;
+任务状态:&nbsp;
+<select id="任务状态"  name="">
+  <option   value="全选">请选择</option>
+  <option   value="收样">收样</option>
+  <option   value="检测中">检测中</option>
+  <option   value="检测完成">检测完成</option>
+  <option   value="审核通过">审核通过</option>
+  <option   value="审核未通过">审核未通过</option>
+  <option   value="证书制作完成">证书制作完成</option>
+  <option   value="证书作废">证书作废</option>
+  <option   value="退回">退回</option>
+  <option   value="完成">完成</option>
+  <option   value="已上传">已上传</option>
+ </select>
+
+
+</div>
+
+
+<div style="margin-top:5px;">
+&nbsp; &nbsp;&nbsp; &nbsp;
+
+  <select id="选择日期">
+    <option value="选择日期">选择日期</option>
+     <option value="收样日期">收样日期</option>
+     <option value="完成日期">完成日期</option>
+    </select>
+    从<label for="date"></label><input id="date1" type="date" style="width:150px"/>
+至<label for="date"></label><input id="date2" type="date" style="width:150px"/>
+
+      <a class="btn btn-primary" style="margin-left:16px;width:100px;height:38px;color:#FFFFFF" role="button" onclick="select_forms()">查询/刷新</a>&nbsp;
+       <button type="reset" style="outline:0px;width:100px;height:38px;border-radius:4px;color: #ffffff ;border :none; background-color: #007BFF">清空查询</button>&nbsp;
+
+
+</div>
+                    </form>
+
+
+                        <div class="card-body table-responsive p-0">
+                            <form action="{% url 'sample_approve' %}" method="POST"> {% csrf_token %}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;批量审核:&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="submit" name="通过审核" class="btn btn-primary"  value="通过审核" style="margin-left:3px;margin-top:3px;outline:0px;width:100px;height:38px;border-radius:4px;color: #ffffff ;border :none; background-color: #007BFF"/>
+                                <input type="submit" name="未通过审核" class="btn btn-primary" value="未通过审核" style="margin-left:3px;margin-top:3px;outline:0px;width:100px;height:38px;border-radius:4px;color: #ffffff ;border :none; background-color: #007BFF"/>
+                                <table class="table table-hover text-nowrap"  style="text-align: center"  id="all_forms">
+                                <thead>
+                                    <tr>
+                                    <th>审核/备注/编辑</th>
+                                    <th>图片</th>
+                                    <th>检测批号</th>
+                                    <th>检测员</th>
+                                    <th>验证码</th>
+                                    <th>任务状态</th>
+                                    <th>编号</th>
+                                    <th>鉴定结果</th>
+                                    <th>外观</th>
+                                    <th>总质量</th>
+                                    <th>密度</th>
+                                    <th>折射率</th>
+                                    <th>光性特质</th>
+                                    <th>放大观察</th>
+                                    <th>重金属检测</th>
+                                    <th>红外光线</th>
+                                    <th>琢型</th>
+                                    <th>颜色级别</th>
+                                    <th>纯净级别</th>
+                                    <th>切工</th>
+                                    <th>其他</th>
+                                    <th>备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                    <tr>
+                                    <td>
+                                    <input type="checkbox" name="check_box_list" style="width: 15px;"  value="{{ task.gemstone_id.gemstone_id}}" />
+                                    <a href="{% url 'add_remarks' task.gemstone_id.gemstone_id %}" class="btn btn-success"  >备注</a>
+                                    <a href="{% url 'edit_sample' task.gemstone_id.gemstone_id %}" class="btn btn-success"  >编辑</a>
+                                    </td>
+                                    <td><img src="/media/{{task.gemstone_id.image}}" alt="" style="width: 100px;"/></td>
+                                    <td>{{ task.identification_id.identification_id}}</td>
+                                    <td>{{ task.identification_id.identification_staff}}</td>
+                                    <td>{{ task.gemstone_id.verification_code}}</td>
+                                    <td>{{ task.gemstone_id.SingleSample_status}}</td>
+                                    <td>{{ task.gemstone_id.gemstone_id}}</td>
+                                    <td>{{ task.gemstone_id.identification_result}}</td>
+                                    <td>{{ task.gemstone_id.gemstone_appearance}}</td>
+                                    <td>{{ task.gemstone_id.gemstone_mass}}</td>
+                                    <td>{{ task.gemstone_id.gemstone_density}}</td>
+                                    <td>{{ task.gemstone_id.refraction_index}}</td>
+                                    <td>{{ task.gemstone_id.light_characteristc}}</td>
+                                    <td>{{ task.gemstone_id.observation_result}}</td>
+                                    <td>{{ task.gemstone_id.heavy_metal}}</td>
+                                    <td>{{ task.gemstone_id.infrared}}</td>
+                                    <td>{{ task.gemstone_id.cut}}</td>
+                                    <td>{{ task.gemstone_id.color_level}}</td>
+                                    <td>{{ task.gemstone_id.Cleanliness_level}}</td>
+                                    <td>{{ task.gemstone_id.diamond_cut}}</td>
+                                    <td>{{ task.gemstone_id.others}}</td>
+                                    <td>{{ task.gemstone_id.remarks}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                             </form>
+                        </div>
+
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+
+      </section>
+
+  {% endblock main_content %}
+

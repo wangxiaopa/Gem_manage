@@ -1,0 +1,77 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    添加收样单
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">图片及备注</h3>
+                    </div>
+                    <form role="form" method="POST" action="{% url 'add_remarks_save' %}">
+                        {% csrf_token %}
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>编号 </label>
+                                <input type="text" class="form-control" name="gemstone_id" value="{{ task.gemstone_id.gemstone_id }}" >
+                            </div>
+                            <div class="form-group">
+                                <label>图片 </label>
+                                <input type="file" id="image_input" name="image_input" >
+                            </div>
+                            <div class="form-group">
+                                <label>备注 </label>
+                               <textarea class="form-control" id="remarks_input" name="remarks_input" rows="10" cols="30" placeholder="&nbsp;备注信息 ">
+                               </textarea>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                         <button type="submit" class="btn btn-primary" id="submit_receipt">提交</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}

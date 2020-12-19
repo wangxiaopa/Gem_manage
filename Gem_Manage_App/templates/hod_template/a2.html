@@ -1,0 +1,182 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+
+    <div>
+        <h2>系统设置</h2>
+        <form method="post" action="{% url 'edit_systemsetting_save' %}">
+        <div>
+
+            编号设置
+            <div class="number_setting" style="display:inline;">
+<!--                <form method="post" action="{% url 'edit_systemsetting_save' %}">-->
+                    {% csrf_token %}
+                    站点编号:<input id="number_le" list="number_letter" style="width: 60px" name="station_letter" value="{{ systemsetting.station_letter}}"/>
+                                <datalist id="number_letter" >
+                                    <option value="A">
+                                    <option value="B">
+                                    <option value="C">
+                                    <option value="D">
+                                    <option value="E">
+                                    <option value="F">
+                                    <option value="G">
+                                    <option value="H">
+                                    <option value="I">
+                                    <option value="J">
+                                    <option value="K">
+                                    <option value="L">
+                                </datalist>
+                    <input id="number_nu" list="number_number" style="width: 60px" name="station_num" value="{{ systemsetting.station_num}}"/>
+                                <datalist id="number_number">
+                                    <option value="1">
+                                    <option value="2">
+                                    <option value="3">
+                                    <option value="4">
+                                    <option value="5">
+                                    <option value="6">
+                                    <option value="7">
+                                    <option value="8">
+                                    <option value="9">
+                                    <option value="10">
+                                    <option value="11">
+                                    <option value="12">
+                                </datalist>
+                      当前编号:
+                    <input type="text" style="width: 60px" name="now_position" value="{{ systemsetting.now_position}}">
+                    <input type="submit" value="设置编号" style="width: 80px">
+
+<!--                </form>-->
+            </div>
+        </div>
+        <br>
+        <div>
+            检测批号:
+            <div class="num_now" style="display:inline;">
+                当前编号:<input type="text" style="width: 60px" name="now_number" value="{{ systemsetting.now_number}}">
+            </div>
+        </div>
+        <div>
+            特征码:
+            <br>
+            <div class="feature">
+                类型:<input id="feature_t" list="feature_ty" style="width: 60px" name="feature_type" value="{{ systemsetting.feature_type}}"/>
+                                <datalist id="feature_ty">
+                                    <option value="数字">
+                                    <option value="字母">
+
+                                </datalist>
+                    位数:
+                    <input id="feature_d" list="feature_di" style="width: 60px" name="feature_digit" value="{{ systemsetting.feature_digit}}"/>
+                                <datalist id="feature_di">
+                                    <option value="1">
+                                    <option value="2">
+                                    <option value="3">
+                                    <option value="4">
+                                    <option value="5">
+                                    <option value="6">
+                                    <option value="7">
+                                    <option value="8">
+                                    <option value="9">
+                                    <option value="10">
+                                    <option value="11">
+                                    <option value="12">
+                                </datalist>
+            </div>
+        </div>
+        <br>
+        <div>
+            图片
+            <br>
+            <div class="picture">
+                图片存储路径: <input type="text" style="width: 200px" name="image_add" value="{{ systemsetting.image_add}}">
+                <input type="submit" value="提交" style="width: 80px">
+                <br>
+                上传图片大小: <input id="pic_s" list="pic_si" style="width: 60px" name="pic_size" value="{{ systemsetting.pic_size}}"/>
+                                <datalist id="pic_si">
+                                    <option value="225*160">
+                                    <option value="2">
+                                    <option value="3">
+                                    <option value="4">
+
+                                </datalist>
+                二维码URL地址: <input type="text" style="width:200px;"  name="QR_add" value="{{ systemsetting.QR_add}}">
+            </div>
+        </div>
+        <br>
+        <div>
+            系统参数(重启后生效)
+            <br>
+            <div class="ssettings">
+                分页大小: <input type="text" style="width: 60px" name="page_size" value="{{ systemsetting.page_size}}"> 记录/页
+                <br>
+                检测员和收样员查看数据方式
+                <br>
+                <div class="radio_2" name="read_type">
+                    <input type="radio" name="method" value="1" checked>各自数据
+                    <input type="radio" name="method" value="2">所有数据
+                </div>
+                <input type="submit" value="提交" style="width: 80px">
+            </div>
+        </div>
+        <br>
+        <div>
+            <div class="scales">
+                <table cellpadding="10px">
+                    <tr>
+                        <th>串口设置: <input id="GR" list="gor" style="width: 60px" name="gorge" value="{{ systemsetting.gorge}}"/>
+                                <datalist id="gor">
+                                    <option value="COM1">
+                                    <option value="COM2">
+                                    <option value="COM3">
+                                    <option value="COM4">
+
+                                </datalist></th>
+                        <th>数据位: <input id="data_B" list="dita_b" style="width: 60px" name="data_bit" value="{{ systemsetting.data_bit}}"/>
+                                <datalist id="dita_b">
+                                    <option value="1">
+                                    <option value="2">
+                                    <option value="3">
+                                    <option value="4">
+                                    <option value="5">
+                                    <option value="6">
+                                    <option value="7">
+                                </datalist></th>
+                        <th>超时(秒): <input type="text" style="width: 40px;" name="overtime" value="{{ systemsetting.overtime}}"></th>
+                    </tr>
+                    <tr>
+                        <th>波特率: <input id="baud_r" list="baud_ra" style="width: 60px" name="baud_rate" value="{{ systemsetting.baud_rate}}"/>
+                                <datalist id="baud_ra">
+                                    <option value="1200">
+                                    <option value="1600">
+                                    <option value="2000">
+                                    <option value="2400">
+                                    <option value="5">
+                                    <option value="6">
+                                    <option value="7">
+                                </datalist></th>
+                        <th>停止位: <input id="stop_b" list="stop_bi" style="width: 60px" name="stop_bit" value="{{ systemsetting.stop_bit}}"/>
+                                <datalist id="stop_bi">
+                                    <option value="One">
+                                    <option value="Two">
+                                    <option value="Three">
+                                    <option value="Four">
+                                </datalist></th>
+                    </tr>
+                    <tr>
+                        <th>奇偶校验: <input id="parity_c" list="parity_ch" style="width: 60px" name="parity_check" value="{{ systemsetting.parity_check}}"/>
+                                <datalist id="parity_ch">
+                                    <option value="YES">
+                                    <option value="NONE">
+                                </datalist></th>
+                        <th>握手控制: <input id="hand_c" list="hand_con" style="width: 60px" name="hand_control" value="{{ systemsetting.hand_control}}"/>
+                                <datalist id="hand_con">
+                                    <option value="1">
+                                    <option value="0">
+                                </datalist></th>
+                    </tr>
+                </table>
+                <input type="submit" value="提交" style="width: 80px">
+            </div>
+        </div>
+        </form>
+    </div>
+{% endblock %}

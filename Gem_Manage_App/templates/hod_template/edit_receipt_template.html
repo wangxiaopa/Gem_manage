@@ -1,0 +1,193 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    编辑收样单
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+<style>
+            /* 控制编辑区域的 */
+          input[type="date"]::-webkit-datetime-edit{
+            /* content: '起始时间'; */
+            color: rgb(188,188,188);
+            padding-left: 10px;
+          }
+          /* 控制年月日这个区域的 */
+          input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+            background-color: #eee;
+          }
+          /* 这是控制年月日之间的斜线或短横线的 */
+          input[type="date"]::-webkit-datetime-edit-text {
+            color: blue;
+            padding: 0 .3em;
+          }
+          /* 控制年字 */
+          input[type="date"]::-webkit-datetime-edit-year-field {
+            color: purple;
+          }
+          /* 控制月字 */
+          input[type="date"]::-webkit-datetime-edit-month-field {
+            color: red;
+          }
+          /* 控制日字 */
+          input[type="date"]::-webkit-datetime-edit-day-field  {
+            color: pink;
+          }
+        /*控制下拉小箭头的*/
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          /* position: absolute;
+          top: 12px;
+          right: 0px; */
+          border: 1px solid #ccc;
+          border-radius: 2px;
+          box-shadow: inset 0 1px #fff, 0 1px #eee;
+          background-color: #eee;
+          /* background:url('../images/icon.png') -188px -99px; */
+          background-image: -webkit-linear-gradient(top, #f0f0f0, #e6e6e6);
+          color: #666;
+        }
+        /* 去掉date中上下小三角，但是保留input类型为number的小三角。 */
+        input[type=date]::-webkit-inner-spin-button {
+          visibility: hidden;
+        }
+        /*----------用来移除叉叉按钮 鼠标移上去还会显示----------*/
+        /* input[type="date"]::-webkit-clear-button{
+         display:none;
+        } */
+    </style>
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">编辑收样单</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{% url 'edit_receipt_save' %}">
+                        {% csrf_token %}
+
+                        
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>检测批号 </label>
+                                <input type="text" class="form-control" name="identification_id" value="{{ sample.identification_id }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group" style="display:block">
+                                <label>送样人编号 </label>
+                                <input type="text" class="form-control" name="id" value="{{ sample.sender.id }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>收样人 </label>
+                                <input type="text" class="form-control" name="sample_collectr" value="{{ sample.sample_collectr.user_name }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>联系电话 </label>
+                                <input type="text" class="form-control" name="receipt_tel" value="{{ sample.receipt_tel }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>收样状态 </label>
+                                <input type="text" class="form-control" name="sample_status" value="{{ sample.sample_status }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>送样人单位 </label>
+                                <input type="text" class="form-control" name="sender_company" value="{{ sample.sender.sender_company }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>送样人 </label>
+                                <input type="text" class="form-control" name="sample_sender" value="{{ sample.sender.sample_sender }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>送样人电话 </label>
+                                <input type="text" class="form-control" name="sender_tel" value="{{ sample.sender.sender_tel }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>邮政编码 </label>
+                                <input type="text" class="form-control" name="postal_code" value="{{ sample.sender.postal_code }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>框号 </label>
+                                <input type="text" class="form-control" name="basket_id" value="{{ sample.basket_id }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>预计完成时间 </label>
+                                <input type="date" class="form-control" name="finish_date" value="{{ sample.finish_date }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>鉴定费用 </label>
+                                <input type="text" class="form-control" name="identification_cost" value="{{ sample.identification_cost }}">
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+                            <div class="form-group">
+                                <label>是否付款 </label>
+                                <select type="text" class="form-control" name="payment_state" >
+                                     <option value="1">是</option>
+                                     <option value="2">否</option>
+                                </select>
+                                <input type="hidden" name="receipt_id" value="{{ sample.identification_id }}" />
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}

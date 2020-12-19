@@ -1,0 +1,112 @@
+{% extends 'hod_template/base_template.html' %}
+{% block page_title %}
+    报表功能
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+<script>//根据任务状态筛选报表
+    function select_forms(key){
+        document.getElementById('form_name').innerText = key;//修改报表名字 报表名字就是任务状态
+        var Id = document.getElementById('all_forms');//获取表单的id
+        var rowsLength = Id.rows.length;//表格的行数
+
+        if(key == '默认报表') {//全部显示
+            for(var i=1;i<rowsLength;i++){//按表的行数进行循环，第0行是字段，从第1行开始筛选
+                Id.rows[i].style.display='';//显示行操作，全部显示
+            }
+            return;//不用筛选
+         }
+
+         //需要筛选
+        var searchCol = 5;//任务状态在第5列，从0开始数起
+        for(var i=1;i<rowsLength;i++){//按表的行数进行循环，第0行是字段，从第1行开始筛选
+          var searchText = Id.rows[i].cells[searchCol].innerHTML;//获取第searchCol列的值
+          if(searchText==key){//匹配则显示 否则隐藏
+            Id.rows[i].style.display='';//显示行操作，
+          }else{
+            Id.rows[i].style.display='none';//隐藏行操作
+          }
+        }
+    }
+</script>
+
+
+ <section class="content" style="margin-left: 11px;margin-right: 8px">
+
+
+        <div class="row">
+            <div class="col-md-12">
+                    <!-- general form elements -->
+                <div class="card">
+
+                    <div class="card-header">
+                        <h3 class="card-title">报表信息</h3>
+                    </div>
+                    <div class="card-header" >
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('默认报表')">默认报表</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('收样')">收样</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('检测中')">检测中</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('检测完成')">检测完成</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('审核通过')">审核通过</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('审核未通过')">审核未通过</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('证书制作完成')">证书制作完成</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('证书作废')">证书作废</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('退回')">退回</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('完成')">完成</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" onclick="select_forms('已上传')">已上传</a>&nbsp;
+                         <a class="btn btn-primary"  role="button" style="color:#FFFFFF" >上传报表导出</a>&nbsp;
+                   </div>
+                    <div class="card-header">
+                        <h3 class="card-title" id="form_name">默认报表</h3>
+                    </div>
+
+                        <!-- /.card-header -->
+
+                        <table class="table table-hover text-nowrap"  style="text-align: center"  id="all_forms">
+
+                        <thead>
+                            <tr>
+                            <th>任务序列</th>
+                            <th>检测批号</th>
+                            <th>订单号</th>
+                            <th>编号</th>
+                            <th>证书种类</th>
+                            <th>任务状态</th>
+                            <th>样品名称</th>
+                            <th>检测要求</th>
+                            <th>样品状况</th>
+                            <th>检测员</th>
+                            <th>收样时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                            <td>{{ task.id}}</td>
+                            <td>{{ task.identification_id.identification_id}}</td>
+                            <td>{{ task.id}}</td>
+                            <td>{{ task.gemstone_id.gemstone_id}}</td>
+                            <td>{{ task.gemstone_id.sample_type}}</td>
+                            <td>{{ task.identification_id.sample_status}}</td>
+                            <td>{{ task.gemstone_id.single_sample_name}}</td>
+                            <td>{{ task.gemstone_id.require}}</td>
+                            <td>{{ task.gemstone_id.status}}</td>
+                            <td>{{ task.identification_id.identification_staff}}</td>
+                            <td>{{ task.identification_id.start_date}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+
+
+
+                        <!-- /.card-body -->
+
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+      </section>
+  {% endblock main_content %}

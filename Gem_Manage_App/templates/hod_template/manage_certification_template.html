@@ -1,0 +1,246 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    证书管理
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+{% comment %} 证书打印 {% endcomment %}
+<script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+
+
+<script>//根据任务状态筛选报表
+    function select_forms() {
+        var Id = document.getElementById('all_forms');//获取表单的id
+        var rowsLength = Id.rows.length;//表格的行数
+        //全部显示
+        for (var i = 1; i < rowsLength; i++) {
+            Id.rows[i].style.display = '';//每次查询和刷新前 所有数据都全部显示
+        }
+        var obj;
+        var option;
+        //检测批号/编号
+        obj = document.getElementById('检测批号/编号');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+
+        if (option != '全选') {
+            var id = document.getElementById("content1").value;//内容
+            if (id != '') {
+                if (option == '检测批号') {
+                    for (var i = 1; i < rowsLength; i++) {
+                        var searchText = Id.rows[i].cells[3].innerHTML;//查第几列 0开始////////////////////////////////修改
+                        searchText = searchText.trim();
+                        if (searchText != '')
+                            if (searchText != id)//筛选是只隐藏就可以的
+                                Id.rows[i].style.display = 'none';//隐藏行操作
+                    }
+                } else {
+                    if (option == '编号') {
+                        for (var i = 1; i < rowsLength; i++) {
+                            var searchText = Id.rows[i].cells[5].innerHTML;//查第几列 0开始////////////////////////////////修改
+                            searchText = searchText.trim();
+                            if (searchText != '')
+                                if (searchText != id)//筛选是只隐藏就可以的
+                                    Id.rows[i].style.display = 'none';//隐藏行操作
+                        }
+                    }
+                }
+            }
+        }
+
+        //收样员
+        obj = document.getElementById('收样员');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if (option != '全选') {
+            for (var i = 1; i < rowsLength; i++) {
+                var searchText = Id.rows[i].cells[1].innerHTML;//查第几列 0开始////////////////////////////////
+                if (searchText != option)//筛选是只隐藏就可以的
+                    Id.rows[i].style.display = 'none';//隐藏行操作
+            }
+        }
+
+        //状态
+        obj = document.getElementById('任务状态');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if (option != '全选') {
+            for (var i = 1; i < rowsLength; i++) {
+                var searchText = Id.rows[i].cells[4].innerHTML;//查第几列 0开始////////////////////////////////
+                if (searchText != option)//筛选是只隐藏就可以的
+                    Id.rows[i].style.display = 'none';//隐藏行操作
+            }
+        }
+        //时间
+        var d1 = new Date(document.getElementById("date1").value).getTime()-86486400;
+        var d2 = new Date(document.getElementById("date2").value).getTime();
+        //解决日期空值问题的最简单方法 设定最大最小日期
+        if (isNaN(d1))
+            d1 = new Date("1900-01-01").getTime();//设定的最小年份
+        if (isNaN(d2))
+            d2 = new Date("2100-12-31").getTime();//设定的最大年份
+        //获得表单中的日期
+        obj = document.getElementById("选择日期");
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if (option != "选择日期") {
+            if (option == "收样日期") {
+                for (var i = 1; i < rowsLength; i++) {
+                    var d = new Date(Id.rows[i].cells[9].innerHTML).getTime();//查收样日期列
+                    if (d < d1 || d2 < d)//不在区间内 隐藏
+                        Id.rows[i].style.display = 'none';//隐藏行操作
+                }
+            } else//完成日期
+            {
+                for (var i = 1; i < rowsLength; i++) {
+                    var d = new Date(Id.rows[i].cells[10].innerHTML).getTime();//查收样日期列
+                    if (d < d1 || d2 < d)//不在区间内 隐藏
+                        Id.rows[i].style.display = 'none';//隐藏行操作
+                }
+            }
+        }
+        //证书种类
+        obj = document.getElementById('证书种类');
+        option = obj.options[obj.selectedIndex].value;//选择的内容
+        if (option != '全选') {
+            for (var i = 1; i < rowsLength; i++) {
+                var searchText = Id.rows[i].cells[6].innerHTML;//查第几列 0开始////////////////////////////////
+                if (searchText != option)//筛选是只隐藏就可以的
+                    Id.rows[i].style.display = 'none';//隐藏行操作
+            }
+        }
+    }
+</script>
+
+
+<section class="content" style="margin-left: 11px;margin-right: 8px;">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="card-title">证书信息</h3>
+                </div>
+ <form>
+                <div style="margin-top:10px ">
+
+&nbsp; &nbsp;&nbsp; &nbsp;
+<select id="检测批号/编号"  name="">
+    <option value="全选">检测批号/编号</option>
+    <option value="检测批号" selected>检测批号</option>
+    <option value="编号">编号</option>
+ </select>&nbsp;
+
+ <input id="content1" name="content1" style="width:150px"/>
+&nbsp; &nbsp;
+收样员:&nbsp;
+<select id="收样员"  name="">
+  <option   value="全选">请选择</option>
+  <option   value="收样员">收样员</option>
+  <option   value="李四">李四</option>
+ </select>
+&nbsp; &nbsp;
+任务状态:&nbsp;
+<select id="任务状态"  name="">
+  <option   value="全选">请选择</option>
+  <option   value="收样">收样</option>
+  <option   value="检测中">检测中</option>
+  <option   value="检测完成">检测完成</option>
+  <option   value="审核通过">审核通过</option>
+  <option   value="审核未通过">审核未通过</option>
+  <option   value="证书制作完成">证书制作完成</option>
+  <option   value="证书作废">证书作废</option>
+  <option   value="退回">退回</option>
+  <option   value="完成">完成</option>
+  <option   value="已上传">已上传</option>
+ </select>
+
+    &nbsp;&nbsp;证书种类:&nbsp;
+    <select id="证书种类"  name="">
+      <option   value="全选">请选择</option>
+      <option   value="宝石">宝石</option>
+      <option   value="玉石">玉石</option>
+      <option   value="大卡">大卡</option>
+      <option   value="小卡">小卡</option>
+      <option   value="大报告">大报告</option>
+      <option   value="小报告">小报告</option>
+     </select>
+
+
+</div>
+
+                <div style="margin-top:5px ;margin-left:3px ">
+&nbsp;
+                    &nbsp; &nbsp;
+  <select id="选择日期">
+    <option value="选择日期">选择日期</option>
+     <option value="收样日期">收样日期</option>
+     <option value="完成日期">完成日期</option>
+    </select>
+    从&nbsp;<label for="date"></label><input id="date1" type="date" style="width:150px"/>
+    至&nbsp;<label for="date"></label><input id="date2" type="date" style="width:150px"/>
+ &nbsp;&nbsp;
+     <a class="btn btn-primary" style="width:100px;height:38px;color:#FFFFFF" role="button" onclick="select_forms()">查询/刷新</a>&nbsp;
+      <button type="reset" style="outline:0px;width:100px;height:38px;border-radius:4px;color: #ffffff ;border :none; background-color: #007BFF">清空查询</button>&nbsp;
+    </div>
+
+
+</form>
+
+
+                    <div class="card-body table-responsive p-0">
+                        <form action="{% url 'fail_certification' %}" method="POST"> {% csrf_token %}
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;批量操作:&nbsp;
+                                <input type="submit" name="证书作废" class="btn btn-primary" value="证书作废" style="margin-left:3px;height:38px;width:100px;outline:0px;border-radius:4px;color: #ffffff ;border :none; background-color: #007BFF"/>
+
+                                <table class="table table-hover text-nowrap" style="text-align: center" id="all_forms">
+                                    <thead>
+                                <tr>
+                                <th>选择</th>
+                                <th>序号</th>
+                                <th>检测员</th>
+                                <th>检测批号</th>
+                                <th>任务状态</th>
+                                <th>编号</th>
+                                <th>证书种类</th>
+                                <th>收样员</th>
+                                <th>收样日期</th>
+                                <th>预计完成日期</th>
+                                <th>操作</th>
+                                </tr>
+                            </thead>
+                                    <tbody>
+                                    {% for certification in certifications %}
+                                    <tr>
+                                    <td>
+                                        <input type="checkbox" name="check_box_list1" style="width: 15px;" value="{{ certification.gemstone_id.gemstone_id}}" />
+                                    </td>
+                                    <td>{{ certification.id }}</td>
+                                    <td>{{ certification.identification_staff.user_name }}</td>
+                                    <td>{{ certification.identification_id.identification_id }}</td>
+                                    <td>{{ certification.gemstone_id.SingleSample_status }}</td>
+                                    <td>{{ certification.gemstone_id.gemstone_id }}</td>
+                                    <td>{{ certification.gemstone_id.sample_type }}</td>
+                                    <td>{{ certification.identification_id.sample_collectr.user_name }}</td>
+                                    <td>{{ certification.identification_id.start_date }}</td>
+                                    <td>{{ certification.identification_id.finish_date }}</td>
+                                    <td>
+                                        <a href="{% url 'print_certification' certification.id %}" class="btn btn-success">打印</a>
+                                    </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </form>
+                    </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+  {% endblock main_content %}

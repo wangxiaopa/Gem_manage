@@ -1,0 +1,136 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    会员管理
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+{% comment %} 手机号查询 {% endcomment %}
+<script>
+function search(){
+  var tel=document.getElementById("tel_search").value;//输入手机号
+  var Id = document.getElementById("member_form");//获取表单的id
+    var rowsLength = Id.rows.length;//表格的总行数
+    var searchCol = 2;//查询第0列的内容
+    if(tel==''){//不可以输入空格 电话为空时 点击查询无效果但也要全部输出
+      for(var i=1;i<rowsLength;i++){//第0行是字段，所以从第1行开始筛选
+        Id.rows[i].style.display='';//显示行操作，
+      }
+      return;
+    }
+    for(var i=1;i<rowsLength;i++){//第0行是字段，所以从第1行开始筛选
+      var searchText = Id.rows[i].cells[searchCol].innerHTML;//获取第i行第searchCol列的内容
+        if(searchText == tel){//
+          Id.rows[i].style.display='';//显示行操作，
+        }else{
+          Id.rows[i].style.display='none';//隐藏行操作
+        }
+      }
+    }
+</script>
+
+<section class="content">
+        <div class="container-fluid">
+
+            <a class="btn btn-primary" href="{% url 'add_member' %}" role="button">添加新会员</a> <br/>&nbsp;
+
+            {% if messages %}
+                <div class="form-group">
+                <div class="col-12">
+                    {% for message in messages %}
+                    {% if message.tags == "error" %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                    {% elif message.tags == "success" %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+            {% endif %}
+
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">会员信息</h3>
+
+                            <div class="card-tools">
+
+                            <div class="input-group input-group-sm" style="width: 150px;">
+
+                                <input id="tel_search" name="content"class="form-control float-right" value="查询手机号"><button onClick="search()">🔍</button>
+                            </div>
+
+                            {% comment %}
+                            </div> {% endcomment %}
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table id="member_form" class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                <th>ID</th>
+                                <th>会员名</th>
+                                <th>电话号码</th>
+                                <th>公司地址</th>
+                                <th>公司名</th>
+                                <th>会员类型</th>
+                                <th>法人代表</th>
+                                <th>执照号</th>
+                                <th>邮政编码</th>
+                                {% comment %} <th>Last Login</th>
+                                <th>Date Joined</th> {% endcomment %}
+                                <th><center>操作</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members %}
+                                <tr>
+                                <td>{{ member.id }}</td>
+                                <td>{{ member.member_name }}</td>
+                                <td>{{ member.telephone }}</td>
+                                <td>{{ member.company_address }}</td>
+                                <td>{{ member.company_name }}</td>
+                                <td>{{ member.member_type.member_type }}</td>
+                                <td>{{ member.legal_representative }}</td>
+                                <td>{{ member.license_number }}</td>
+                                <td>{{ member.postal_code }}</td>
+                                <td>
+                                    <a href="{% url 'edit_member' member.id %}" class="btn btn-success">更新信息</a>
+                                    <a href="{% url 'edit_member' member.id %}" class="btn btn-success">生成订单</a>
+                                    <a href="{% url 'delete_member' member.id %}" class="btn btn-danger">删除会员</a>
+                                </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}

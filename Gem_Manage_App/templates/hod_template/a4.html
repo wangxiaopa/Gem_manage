@@ -1,0 +1,90 @@
+{%extends "hod_template/manage_system_template.html" %}
+{% block a1 %}
+
+    <div id="a1_content">
+        <h4>参数配置</h4>
+        <p> </p>
+        <div>
+
+
+
+
+
+
+<section class="content">
+        <div class="container-fluid">
+
+            <a class="btn btn-primary" href="{% url 'add_usergroupstatus' %}" role="button">增加参数配置</a> &nbsp;&nbsp;
+            配置类型：
+            <select>
+                <option value ="1111">用户任务状态</option>
+                <option value ="2222">其他配置选项</option>
+            </select>
+            配置名：
+            <select>
+                <option value ="11111">系统管理员</option>
+                <option value ="22222">收样员</option>
+                <option value ="22222">审核员</option>
+                <option value ="22222">检测员</option>
+                <option value ="22222">辅助员</option>
+            </select>
+
+            <br/><br/>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">参数配置</h3>
+
+                            <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                <th>配置名</th>
+                                <th>配置值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for usergroupstatus in usergroupstatuss %}
+                                <tr>
+                                <td>{{ usergroupstatus.user_group.group_name }}</td>
+                                <td>{{ usergroupstatus.usergroup_status_values }}</td>
+                                <td>
+                                    <a href="{% url 'edit_usergroupstatus' usergroupstatus.id %}" class="btn btn-success">编辑</a>
+                                    <a href="{% url 'delete_usergroupstatus' usergroupstatus.id %}" class="btn btn-danger">删除</a>
+                                </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+</section>
+
+
+        </div>
+    </div>
+
+{% endblock %}
